@@ -66,6 +66,12 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        /* Chatbox Scroll */
+        #chatbox {
+            max-height: 400px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body class="bg-[#050d33] text-white flex items-center justify-center min-h-screen">
@@ -115,7 +121,7 @@
         let typingInterval;
         let isPaused = false;
         let currentText = ''; // To store the current text for resuming
-        let currentDiv = null; // To store the current div being typed into
+        let currentDiv = null; // To store the current div element being typed into
 
         // Function to simulate typing effect
         function typeEffect(text, element, speed = 20) {
@@ -128,10 +134,13 @@
                     clearInterval(typingInterval); // Stop the typing effect if paused
                     return;
                 }
-                element.innerHTML += text[typingIndex];
-                typingIndex++;
-                if (typingIndex === text.length) {
-                    clearInterval(typingInterval);
+                // Add character by character to the element
+                if (typingIndex < text.length) {
+                    element.innerHTML += text[typingIndex];
+                    typingIndex++;
+                } else {
+                    clearInterval(typingInterval); // Stop typing when it's finished
+                    chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
                 }
             }, speed);
         }
